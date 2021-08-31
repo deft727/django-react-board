@@ -7,7 +7,11 @@ import BoardDetail from "./components/board_detail/BoardDetail";
 import Navbar from "./components/navbar/navbar";
 import TopicDetail from "./components/topic_detail/Topic";
 import Footer from "./components/footer/footer";
-
+import CustomersList from "./components/customers/CustomersList";
+import  CustomerCreateUpdate  from './components/customers/CustomerCreateUpdate'
+import InfoPageDetail from "./components/InfoPages/infopages";
+import LoginFormik from "./components/auth/signUpform";
+import RegisterPage from "./components/auth/registerForm";
 
 function App() {
   return (
@@ -15,9 +19,21 @@ function App() {
  <Router>
     < Navbar />
       <Switch>
+      <Route path="/auth/token/login/" component={LoginFormik} />
+      <Route path="/auth/users/" component={RegisterPage} />
+
+      <Route path="/pages/:id/" component={InfoPageDetail} />
+
+      <Route path="/customer-list/" exact component={CustomersList} />
+      <Route path="/customer/:pk/"  component={CustomerCreateUpdate} />
+      <Route path="/customer/" exact component={CustomerCreateUpdate} />
+
         <Route path="/board/:id/topic/:pk/" exect component={TopicDetail} />
+
         <Route path="/board/:id/" exect component={BoardDetail} />
+
         <Route path="" exect component={Table} />
+
       </Switch>
      < Footer />
 </Router>

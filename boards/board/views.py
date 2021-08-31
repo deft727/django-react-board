@@ -13,4 +13,5 @@ def board_detail(request):
     return render(request, 'index.html', {})
 
 
-
+def pages_detail(request):
+    return render(request, 'index.html', {})

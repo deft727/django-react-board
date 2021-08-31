@@ -1,7 +1,8 @@
 from pyexpat import model
 
 from rest_framework import serializers
-from board.models import Board, Post, Topic, Reader, Blogger
+from board.models import Board, Post, Topic, Reader, Blogger , InfoPages
+from django.contrib.auth.models import User
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -60,6 +61,7 @@ class BoardSerializer(serializers.ModelSerializer):
             return {"message": "Not yet", "author": "Not yet"}
 
 
+
 class BoardDetailSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True)
 
@@ -95,3 +97,17 @@ class BloggerSerializer(serializers.ModelSerializer):
         if not (obj.user.first_name):
             return obj.user.username
         return obj.username
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('pk', 'username', 'email')
+
+
+class InfoPagesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = InfoPages
+        fields = "__all__"

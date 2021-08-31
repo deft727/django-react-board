@@ -7,7 +7,7 @@ function BoardDetail({ match }) {
     const [board, Setboard] = useState({})
     const [topics, SetTopic] = useState([])
     const id = match.params.id
-console.log(match)
+// console.log(match)
     useEffect(() => {
 
         axios({

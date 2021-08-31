@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Link} from 'react-router-dom';
+import {Link , Redirect} from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -33,8 +33,10 @@ function Footer() {
                                     Privacy policy
                                 </h6>
                                 <p>
-         <Link className="text-reset" to={{pathname:`/pages/privacy/policy/` }}>Privacy</Link> /
-         <Link className="text-reset" to={{pathname:`/pages/privacy/terms/` }}>Terms</Link>
+
+         <Link className="text-reset" to={{pathname:`/pages/1/` }}>Privacy</Link>  /
+         <Link className="text-reset" to={{pathname:`/pages/2/` }}>Terms</Link> /
+         <Link className="text-reset" to={{pathname:`/customer-list/` }}>customers</Link>
                                 </p>
 
                             </div>
