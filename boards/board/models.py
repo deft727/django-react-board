@@ -113,6 +113,7 @@ class Post(models.Model):
         truncated_message = Truncator(self.message)
         return truncated_message.chars(30)
 
+
 class InfoPages(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()

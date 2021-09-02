@@ -8,12 +8,20 @@ import axios from 'axios';
 function Table() {
   const [boards, SetBoards] = useState([])
    useEffect(() => {
+    // let tokens = window.localStorage.getItem('tokens');
+       const tokens = localStorage.tokens;
+       // console.log('tokens', tokens )
 
         axios({
             method: "GET",
+            headers: {
+                'Authorization': `Token ${tokens}`,
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json'
+                },
             url: `http://127.0.0.1:8000/api/board/`
         }).then(response => {
-            SetBoards(response.data)
+            SetBoards(response.data.results)
         })
     }, [])
   return (

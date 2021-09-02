@@ -35,6 +35,7 @@ const LoginPage = (props) => {
     }).then(data => {
       // HANDLE RESPONSE DATA
       console.log(data);
+      window.localStorage.setItem('tokens', data.auth_token);
       props.history.push("/")
     }).catch((error) => {
       // HANDLE ERROR

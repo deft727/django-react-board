@@ -21,7 +21,7 @@ function TopicDetail({ match }) {
     return(
 
 <div className="App bordered mt-4 m-3">
-       {posts.map(p => (
+
            <table className="table table-bordered m-2">
                <thead>
                <tr>
@@ -30,16 +30,16 @@ function TopicDetail({ match }) {
                    <th scope="col">Time</th>
                </tr>
                </thead>
-               <tbody>
+               {posts.map(p => (
+               <tbody key="{p.id}">
                <tr>
                    <th >{p.created_by}</th>
                    <td>{p.message}</td>
                    <td>{p.created_at}</td>
                </tr>
                </tbody>
+                   ))}
            </table>
-
-       ))}
 </div>
     )
 }

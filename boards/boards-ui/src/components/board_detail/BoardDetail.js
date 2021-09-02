@@ -7,11 +7,17 @@ function BoardDetail({ match }) {
     const [board, Setboard] = useState({})
     const [topics, SetTopic] = useState([])
     const id = match.params.id
+    const tokens = localStorage.tokens;
 // console.log(match)
     useEffect(() => {
 
         axios({
             method: "GET",
+            headers: {
+                'Authorization': `Token ${tokens}`,
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json'
+                },
             url: `http://127.0.0.1:8000/api/board/${id}/`
         }).then(response => {
             Setboard(response.data)
@@ -46,9 +52,8 @@ function BoardDetail({ match }) {
             {t.starter}
           </td>
           <td className="align-middle">
-            123
+            {t.replies}
           </td>
-
           <td className="align-middle">
                {t.views}
               </td>

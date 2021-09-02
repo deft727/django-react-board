@@ -5,6 +5,20 @@ from board.models import Board, Post, Topic, Reader, Blogger , InfoPages
 from django.contrib.auth.models import User
 
 
+class UserSerializer(serializers.ModelSerializer):
+    # username = serializers.SerializerMethodField()
+    # email = serializers.SerializerMethodField()
+    #
+    # def get_username(self,request):
+    #     return request
+    # def get_email(self,obj):
+    #     return obj
+    class Meta:
+
+        model = User
+        fields = ("id", "username", "email")
+
+
 class PostSerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     postCount = serializers.SerializerMethodField()
@@ -24,10 +38,22 @@ class PostSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
+    starter = serializers.SerializerMethodField()
+    replies = serializers.SerializerMethodField()
+
+    def get_starter(self, obj):
+        return obj.starter.username
+
+
+    def get_replies(self, obj):
+        return obj.posts.all().count()
 
     class Meta:
         model = Topic
         fields = "__all__"
+
+
+
 
 
 class TopicDetailSerializer(serializers.ModelSerializer):

@@ -1,16 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Link} from 'react-router-dom';
+// import Dropdown from 'react-overlays/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import Dropdown from 'react-bootstrap/Dropdown'
+import NavDropdown from 'react-bootstrap/NavDropdown'
+import Nav from 'react-bootstrap/Nav'
+import Navbar from "react-bootstrap/Navbar";
+import {withRouter} from "react-router-dom";
 
 import axios from 'axios';
-                // <Link className="navbar-brand" to={{pathname:`/board/`, froDashboard:false }}>Django Boards</Link>
+                // <Link className="navbar-brand" to={{pathname:`/api/account/`, froDashboard:false }}>Django Boards</Link>
 
-function Navbar() {
+function MyNavbar(props) {
+    const tokens = localStorage.tokens;
+    const logout = ()=>{ axios({
+            method: "post",
+            headers: {
+                'Authorization': `Token ${tokens}`,
+                'Accept' : 'application/json',
+                'Content-Type': 'application/json'
+                },
+            url: `http://127.0.0.1:8000/auth/token/logout/`
+        }).then((response)=> {
+            // console.log(response)
+            if (response.status === 204) {
+            window.localStorage.removeItem("tokens");
+             // window.href="/"
+                props.history.push("/auth/token/login/")
+            }
+    } )}
+
 
   return (
 
     <div className="App">
-
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
                 <Link className="navbar-brand" to={{pathname:`/`, froDashboard:false }}>Django Boards</Link>
@@ -32,18 +56,23 @@ function Navbar() {
          <Link  className="nav-link active" aria-current="page" to={{pathname:`/auth/users/`, froDashboard:false }}>Register</Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
-                                Profile
-                            </a>
-                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a className="dropdown-item" href="#">My info</a></li>
-                                <li><a className="dropdown-item" href="#">Change password</a></li>
-                                <li>
-                                    <hr className="dropdown-divider" />
-                                </li>
-         <Link  className="nav-link active" aria-current="page" to={{pathname:`/auth/logout/`, froDashboard:false }}>Logout</Link>
-                            </ul>
+
+ <Navbar.Toggle aria-controls="navbar-dark-example" />
+    <Navbar.Collapse id="navbar-dark-example">
+      <Nav>
+        <NavDropdown
+          id="nav-dropdown-dark-example"
+          title="Profile"
+          menuVariant="dark"
+        >
+            <Link to={{pathname:`/account/`, froDashboard:false }} >  <NavDropdown.Item href="/account/">My profile</NavDropdown.Item></Link>
+          <NavDropdown.Item href="#action/3.2">Change password</NavDropdown.Item>
+          {/*<NavDropdown.Item href="#action/3.3">Logout</NavDropdown.Item>*/}
+          <NavDropdown.Divider />
+          <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+        </NavDropdown>
+      </Nav>
+    </Navbar.Collapse>
                         </li>
 
                     </ul>
@@ -55,4 +84,4 @@ function Navbar() {
   )
 }
 
-export default Navbar;
+export default withRouter(MyNavbar);

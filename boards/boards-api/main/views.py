@@ -1,23 +1,43 @@
 from rest_framework import status, viewsets, permissions
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from board.models import Board , Topic, Post , Blogger , Reader, InfoPages
+Token
+
 from .serializers import (BoardSerializer,
                           BoardDetailSerializer,
                           TopicSerializer,
                           TopicDetailSerializer,
                           CustomerSerializer,
-                          InfoPagesSerializer)
+                          InfoPagesSerializer,
+                          UserSerializer)
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from .servises import PaginationBoards
+
+
+# class UserViewSet(viewsets.ModelViewSet):
+#     serializer_class = UserSerializer
+#     queryset = User.objects.all()
+class UserViewSet(APIView):
+
+    def get(self, request,):
+        token = request.headers.get('Authorization')
+        token = token.split(' ')
+        token = token[1].strip()
+        user = Token.objects.get(key=token).user
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
 
 
 class BoardViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSerializer
     queryset = Board.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated,]
+    pagination_class = PaginationBoards
     action_to_serializer = {
         "retrieve": BoardDetailSerializer
     }

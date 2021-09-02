@@ -43,10 +43,15 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework.authtoken',
     'django_filters',
-    'drf_yasg'
+    # 'drf_yasg',
+
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
+
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE =  [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -114,7 +119,31 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 1,
 }
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+   # 'rest_framework_social_oauth2.backends.DjangoOAuth2',
+)
+
+# SOCIAL_AUTH_PIPELINE = (
+#     'social.pipeline.social_auth.social_details',
+#     'social.pipeline.social_auth.social_uid',
+#     'social.pipeline.social_auth.auth_allowed',
+#     'social.pipeline.social_auth.social_user',
+#     'social.pipeline.user.get_username',
+#     'social.pipeline.user.create_user',
+#     'social.pipeline.social_auth.associate_user',
+#     'social.pipeline.social_auth.load_extra_data',
+#     'social.pipeline.user.user_details',
+# )
 
 DJOSER = {
     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
@@ -184,3 +213,30 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CORS_ALLOWED_ORIGINS = [
+#     "https://example.com",
+#     "https://sub.example.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000",
+# ]
+
+
+
+
+OCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_GITHUB_KEY = 'ac2c81b0f7e251748034'
+SOCIAL_AUTH_GITHUB_SECRET = 'ac46faf76c240ec910fa0d52e2bcf51f2dd522c1'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '868434577098385'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'e2351fc2821ceefcb601b1e4794c9ef8'
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '233025016839-029b0a3bsvuu5h97vccm6jdv10ung6hh.apps.googleusercontent.com'
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'wPLtnBc7cQzmCVtMM9uV_CZN'
+
+GOOGLE_RECAPTCHA_SECRET_KEY ='6LfS2swbAAAAAJPp0Zu7zK23s__XlLukWvENo_gj'
+RECAPTCHA_PRIVATE_KEY = '6LfS2swbAAAAAJPp0Zu7zK23s__XlLukWvENo_gj'
+RECAPTCHA_PUBLIC_KEY = '6LfS2swbAAAAALsPWnB2GOlOBdQiqnXgn9H0Raq0'
