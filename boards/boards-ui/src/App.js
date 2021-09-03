@@ -14,12 +14,14 @@ import LoginFormik from "./components/auth/signUpform";
 import RegisterPage from "./components/auth/registerForm";
 import Profile from "./components/account/my_account";
 
+
 function App() {
   return (
     <div className="App">
  <Router>
     < MyNavbar />
       <Switch>
+
       <Route path="/auth/token/login/" component={LoginFormik} />
       <Route path="/auth/users/" component={RegisterPage} />
 

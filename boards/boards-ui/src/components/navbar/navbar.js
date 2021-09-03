@@ -13,6 +13,7 @@ import axios from 'axios';
                 // <Link className="navbar-brand" to={{pathname:`/api/account/`, froDashboard:false }}>Django Boards</Link>
 
 function MyNavbar(props) {
+    const [user, Setuser] = useState({})
     const tokens = localStorage.tokens;
     const logout = ()=>{ axios({
             method: "post",
@@ -48,16 +49,21 @@ function MyNavbar(props) {
                         <li className="nav-item">
   <a href="http://127.0.0.1:8000/swagger/" className="nav-link active text-info" target="_blank">Documents</a>
                         </li>
+                        {
+                          tokens ? null : ( <>
                         <li className="nav-item">
+
          <Link  className="nav-link active" aria-current="page" to={{pathname:`/auth/token/login/`, froDashboard:false }}>Login</Link>
 
                         </li>
                         <li className="nav-item">
          <Link  className="nav-link active" aria-current="page" to={{pathname:`/auth/users/`, froDashboard:false }}>Register</Link>
                         </li>
+                            </>)
+                        }
                         <li className="nav-item dropdown">
-
- <Navbar.Toggle aria-controls="navbar-dark-example" />
+                            {
+                                !tokens ? null : ( <><Navbar.Toggle aria-controls="navbar-dark-example" />
     <Navbar.Collapse id="navbar-dark-example">
       <Nav>
         <NavDropdown
@@ -72,7 +78,9 @@ function MyNavbar(props) {
           <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
         </NavDropdown>
       </Nav>
-    </Navbar.Collapse>
+    </Navbar.Collapse></>)
+                            }
+
                         </li>
 
                     </ul>

@@ -26,8 +26,8 @@ function Profile() {
 
 
   return (
-
-      <div className="page-content page-container mb-5 pd-5" id="page-content" key={user.id}>
+<div className="container mt-5">
+      <div className="page-content page-container ml-4 " id="page-content" key={user.id}>
           <div className="padding mb-5">
               <div className="row container d-flex justify-content-center mb-5">
                   <div className="col-xl-6 col-md-12">
@@ -66,6 +66,7 @@ function Profile() {
               </div>
           </div>
       </div>
+    </div>
   )
 }
 

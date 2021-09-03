@@ -1,9 +1,10 @@
+from django.http import Http404
 from rest_framework import status, viewsets, permissions
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from board.models import Board , Topic, Post , Blogger , Reader, InfoPages
-Token
+
 
 from .serializers import (BoardSerializer,
                           BoardDetailSerializer,
@@ -17,19 +18,14 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .servises import PaginationBoards
+from .utils import get_user
 
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     serializer_class = UserSerializer
-#     queryset = User.objects.all()
+
 class UserViewSet(APIView):
 
     def get(self, request,):
-        token = request.headers.get('Authorization')
-        token = token.split(' ')
-        token = token[1].strip()
-        user = Token.objects.get(key=token).user
-        serializer = UserSerializer(user)
+        serializer = UserSerializer(get_user(request))
         return Response(serializer.data)
 
 
@@ -47,6 +43,14 @@ class BoardViewSet(viewsets.ModelViewSet):
             self.action,
             self.serializer_class
         )
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            self.perform_destroy(instance)
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class TopicViewSet(viewsets.ModelViewSet):

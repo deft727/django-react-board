@@ -6,13 +6,7 @@ from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # username = serializers.SerializerMethodField()
-    # email = serializers.SerializerMethodField()
-    #
-    # def get_username(self,request):
-    #     return request
-    # def get_email(self,obj):
-    #     return obj
+
     class Meta:
 
         model = User
@@ -51,9 +45,6 @@ class TopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = Topic
         fields = "__all__"
-
-
-
 
 
 class TopicDetailSerializer(serializers.ModelSerializer):
