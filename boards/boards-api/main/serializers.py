@@ -78,6 +78,12 @@ class BoardSerializer(serializers.ModelSerializer):
             return {"message": "Not yet", "author": "Not yet"}
 
 
+    def update(self, instance, validated_data):
+        instance.name = validated_data['name']
+        instance.description = validated_data['description']
+        instance.save()
+        return instance
+
 
 class BoardDetailSerializer(serializers.ModelSerializer):
     topics = TopicSerializer(many=True)

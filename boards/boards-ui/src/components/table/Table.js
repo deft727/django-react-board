@@ -5,11 +5,23 @@ import { Redirect } from 'react-router';
 import axios from 'axios';
 import Cookies from 'js-cookie'
 import ReactDOM from 'react-dom';
-import { Modal, Button } from 'react-bootstrap';
-function deleteboard(val) {
+import { Button } from 'react-bootstrap';
+import MyModal from "../Modal/modal";
 
+
+
+function deleteboard(val) {
 }
 function Table(props) {
+  const [currentBoard, setCurrentBoard]  = useState(null);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow =(bordId) =>{
+      console.log(bordId);
+      setShow(true);
+      setCurrentBoard(bordId);
+  }
 
     const tokens = localStorage.tokens;
 
@@ -65,7 +77,11 @@ function Table(props) {
                         <tr>
                             <td>
                                 <small className="text-muted d-block">
+                                    {
+                                !b.topics_count ? <Link className="link-danger" >{b.name}</Link> : (
                           <Link className="link-success" to={{pathname:`/board/${b.id}/`, froDashboard:false }}>{b.name}</Link>
+                                    )
+                                    }
                                 </small>
                             </td>
                             <td className="align-middle">
@@ -85,18 +101,18 @@ function Table(props) {
                                 </small>
                             </td>
                             <td>
-      <Button variant="primary" onClick={}>
-        Launch Form modal
-      </Button>
+      <Button variant="primary" onClick={()=>handleShow(b)} >
+        Edit
+      </Button> &nbsp; &nbsp;
        <Link  type="button" onClick={() => deleteboard(`${b.id}`)}  className="btn btn-danger">Delete</Link>
                             </td>
                         </tr>
                         </tbody>
                     ))}
                 </table>
+                {show && <MyModal open={show} boarD={currentBoard} handleClose={handleClose}/>}
             </div>
         );
-
 }
 
 

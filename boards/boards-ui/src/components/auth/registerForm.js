@@ -50,9 +50,10 @@ const RegisterPage = (props) => {
         <div className="login-wrapper" style={registerPageStyle}>
           <h2>Register Page</h2>
           <Formik
-       initialValues={{ username: '',email: "", password: "" }}
+       initialValues={{ username: "",email: "", password: "" }}
        onSubmit={handleSubmit}
        validationSchema={validationSchema}
+       enableReinitialize
      >
        {props => (
           <Form className="form-container">
