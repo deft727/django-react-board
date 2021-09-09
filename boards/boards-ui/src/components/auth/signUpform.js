@@ -34,7 +34,7 @@ const LoginPage = (props) => {
       }
     }).then(data => {
       // HANDLE RESPONSE DATA
-      console.log(data);
+      // console.log(data);
       window.localStorage.setItem('tokens', data.auth_token);
       props.history.push("/")
     }).catch((error) => {
@@ -64,7 +64,7 @@ const LoginPage = (props) => {
               <Field type="password" name="password" id={"password"} className={"form-control "} placeholder="Password" />
               { props.touched.password && props.errors.password && <span className="help-block text-danger">{props.errors.password}</span> }
             </div>
-            <button type="submit" className="btn btn-primary mb-2">Login</button>
+            <button type="submit" className="btn btn-primary m-2">Login</button>
           </Form>)}
              </Formik>
         </div>
@@ -73,39 +73,6 @@ const LoginPage = (props) => {
   );
 }
 
-// const LoginFormik = withFormik({
-//   mapPropsToValues: (props) => {
-//     return {
-//       password: props.password || ''
-//     }
-//   },
-//   validationSchema: Yup.object().shape({
-//     password: Yup.string().required('Password is required')
-//   }),
-//   handleSubmit: (values) => {
-//     const REST_API_URL = "http://127.0.0.1:8000/auth/token/login/";
-//     fetch(REST_API_URL, {
-//       method: 'post',
-//       body: JSON.stringify(values),
-//       headers: {
-//                 'Content-Type': 'application/json',
-//                 }
-//     }).then(response=> {
-//       if (response.ok) {
-//         return response.json();
-//       } else {
-//         // HANDLE ERROR
-//         throw new Error('Something went wrong');
-//       }
-//     }).then(data => {
-//       // HANDLE RESPONSE DATA
-//       console.log(data);
-//       history.push("/")
-//     }).catch((error) => {
-//       // HANDLE ERROR
-//       console.log(error);
-//     });
-//   }
-// })(LoginPage);
+
 
 export default withRouter(LoginPage);

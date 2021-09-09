@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Link} from 'react-router-dom';
-// import Dropdown from 'react-overlays/Dropdown'
-import DropdownButton from 'react-bootstrap/DropdownButton'
-import Dropdown from 'react-bootstrap/Dropdown'
+// // import Dropdown from 'react-overlays/Dropdown'
+// import DropdownButton from 'react-bootstrap/DropdownButton'
+// import Dropdown from 'react-bootstrap/Dropdown'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from "react-bootstrap/Navbar";
@@ -27,8 +27,8 @@ function MyNavbar(props) {
             // console.log(response)
             if (response.status === 204) {
             window.localStorage.removeItem("tokens");
-             // window.href="/"
-                props.history.push("/auth/token/login/")
+            window.location.reload();
+             //    props.history.push("/auth/token/login/")
             }
     } )}
 

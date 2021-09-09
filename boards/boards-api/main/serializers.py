@@ -1,8 +1,20 @@
-from pyexpat import model
-
 from rest_framework import serializers
-from board.models import Board, Post, Topic, Reader, Blogger , InfoPages
+from board.models import Board, Post, Topic, Reader, Blogger , InfoPages , Photo
 from django.contrib.auth.models import User
+
+
+class PostCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('message', 'topic', 'created_by', 'updated_at')
+
+
+class CreateTopicSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Topic
+        fields = ('subject', 'board')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,12 +59,21 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class PhotoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Photo
+        fields = "__all__"
+
+
 class TopicDetailSerializer(serializers.ModelSerializer):
     posts = PostSerializer(many=True)
+    photos = PhotoSerializer(many=True)
 
     class Meta:
         model = Topic
         fields = "__all__"
+
 
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -76,6 +97,7 @@ class BoardSerializer(serializers.ModelSerializer):
             return {"message": last_post.message[0:25], "author": last_post.created_by.username}
         else:
             return {"message": "Not yet", "author": "Not yet"}
+
 
 
     def update(self, instance, validated_data):

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import {Link, withRouter} from "react-router-dom";
+import {Button} from "react-bootstrap";
+import InfoModal from "../InfoModal/infomodal";
+import NewTopic from "../NewTopic/newtopic";
 
 function BoardDetail({ match }) {
 
@@ -8,6 +11,13 @@ function BoardDetail({ match }) {
     const [topics, SetTopic] = useState([])
     const id = match.params.id
     const tokens = localStorage.tokens;
+
+    const [showTopic, setShowTopic] = useState(false);
+    const handleCloseTopic = () => setShowTopic(false);
+    const handleShowTopic =() =>{
+      setShowTopic(true);}
+
+
 // console.log(match)
     useEffect(() => {
 
@@ -23,12 +33,21 @@ function BoardDetail({ match }) {
             Setboard(response.data)
             SetTopic(response.data.topics)
         })
-    }, [id])
+    }, [id, showTopic])
 
     return(
+
 <div className="App mt-5">
+ {
+                          !tokens ? null : ( <>
+              <Button variant="success " className="d-flex m-1 ml-2" onClick={()=>handleShowTopic()} >New Topic</Button>
+  {showTopic && <NewTopic openTopic={showTopic}  handleCloseTopic={handleCloseTopic} />}
+  </>)
+                        }
+ {topics.length ?
 
      <table className="table table-bordered m-1">
+
         <thead>
         <tr>
       <th scope="col">Topic</th>
@@ -43,9 +62,12 @@ function BoardDetail({ match }) {
         <tr>
           <td>
               <small className="text-muted d-block">
-
-<Link className="link-success" to={{pathname:`/board/${board.id}/topic/${t.id}/` }}>{t.subject}</Link>
-
+ {
+   !tokens ? null : (
+<Link className="link-success" to={{pathname:`/board/${board.id}/topic/${t.id}/` }}>
+    <p className="h5">{t.subject}</p>
+    </Link>
+   )}
               </small>
           </td>
           <td className="align-middle">
@@ -64,7 +86,10 @@ function BoardDetail({ match }) {
         </tbody>
            ))}
       </table>
+     : <p className="text-center fs-3">Content doesnt exist, create new topic</p>
+ }
 </div>
+
     )
 }
 

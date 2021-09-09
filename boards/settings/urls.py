@@ -18,7 +18,7 @@ urlpatterns = [
     path('auth/', include('djoser.urls.authtoken')),
     path('auth/', include('djoser.urls.jwt')),
     path('', index),
-    path('board/<int:pk>/', board_detail),
+    path('board/<int:pk>/', board_detail,),
     path('board/<int:pk>/topic/<int:id>/', topic_detail),
     path('pages/<int:id>/', pages_detail),
     ]

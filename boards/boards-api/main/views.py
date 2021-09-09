@@ -1,9 +1,13 @@
+from collections import OrderedDict
+
 from django.http import Http404
 from rest_framework import status, viewsets, permissions
 from rest_framework.authtoken.models import Token
+from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from board.models import Board , Topic, Post , Blogger , Reader, InfoPages
+from board.models import Board , Topic, Post , Blogger , Reader, InfoPages, Photo
+from rest_framework.authentication import BasicAuthentication
 
 
 from .serializers import (BoardSerializer,
@@ -12,14 +16,20 @@ from .serializers import (BoardSerializer,
                           TopicDetailSerializer,
                           CustomerSerializer,
                           InfoPagesSerializer,
-                          UserSerializer)
+                          CreateTopicSerializer,
+                          UserSerializer,
+                          PostCreateSerializer)
 from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .servises import PaginationBoards
 from .utils import get_user
+from datetime import datetime
 
+# class New_topicView(APIView):
+#     def post(self,request):
+#
 
 
 class UserViewSet(APIView):
@@ -28,11 +38,15 @@ class UserViewSet(APIView):
         serializer = UserSerializer(get_user(request))
         return Response(serializer.data)
 
+    def post(self, request,):
+        print(request.data)
+
 
 class BoardViewSet(viewsets.ModelViewSet):
     serializer_class = BoardSerializer
     queryset = Board.objects.all()
-    permission_classes = [permissions.IsAuthenticated,]
+    authentication_classes = (BasicAuthentication,)
+    permission_classes = (permissions.AllowAny,)
     pagination_class = PaginationBoards
     action_to_serializer = {
         "retrieve": BoardDetailSerializer
@@ -69,38 +83,45 @@ class TopicViewSet(viewsets.ModelViewSet):
 
 
 class TopicView(APIView):
-
     def get(self, request, **kwargs):
         topic = Topic.objects.get(id=kwargs.get("pk"))
         serializer = TopicDetailSerializer(topic)
         return Response(serializer.data)
 
+    def post(self, request, **kwargs):
+        data = OrderedDict()
+        data.update(request.data)
+        data["topic"] = kwargs.get("pk")
+        data["created_by"] = get_user(request).pk
+        data["updated_at"] = datetime.now()
+        serializer = PostCreateSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class New_topicView(APIView):
+
+    def post(self, request, pk):
+        data = request.data
+        user = get_user(request)
+        files = request.FILES.getlist('image')
+        topic = Topic.objects.filter(subject=data.get('subject'), board=Board.objects.get(pk=pk)).exists()
+        if user and topic is not True:
+            new_topic = Topic.objects.create(subject=data.get('subject'), board=Board.objects.get(pk=pk), starter=user)
+            if files:
+                for file in files:
+                    Photo.objects.create(file=file, topic=new_topic)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class InfoPagesView(viewsets.ModelViewSet):
     serializer_class = InfoPagesSerializer
     queryset = InfoPages.objects.all()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

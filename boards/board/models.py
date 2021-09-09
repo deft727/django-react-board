@@ -1,14 +1,21 @@
+import sys
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from PIL import Image
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import Truncator
 # from markdown import markdown
-# from simple_history.models import HistoricalRecords
-import math
+from simple_history.models import HistoricalRecords
+
+
+class Avatar(models.Model):
+    image =  models.ImageField(null=True, blank=True, upload_to='avatar/')
+    user = models.CharField(blank=True, null=True, default=None, max_length=255, verbose_name='имя')
 
 
 class Blogger(models.Model):
-
     file = models.ImageField(null=True, blank=True, upload_to='avatar/')
     # category = models.ManyToManyField(Category,verbose_name='Категории',null=True)
     user = models.OneToOneField(User, verbose_name='blogger', on_delete=models.CASCADE, related_name='blogger')
@@ -38,7 +45,7 @@ class BoardManager(models.Manager):
 class Board(models.Model):
     name = models.CharField(max_length=30, unique=True, verbose_name='Доска')
     description = models.CharField(max_length=100, verbose_name='Описание')
-    # history = HistoricalRecords()
+    history = HistoricalRecords()
     is_active = models.BooleanField(default=True, null=True, blank=True)
     objects = BoardManager()
 
@@ -62,10 +69,29 @@ class Photo(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     file = models.ImageField(upload_to='photos/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
-    topic = models.ForeignKey("Topic", on_delete=models.CASCADE)
+    topic = models.ForeignKey("Topic",related_name="photos", on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        image2 = self.file
+        if image2 :
+            img2=Image.open(image2)
+            new_img2 = img2.convert('RGB')
+            res_img2 = new_img2.resize((800, 400), Image.ANTIALIAS)
+            filestream = BytesIO()
+            file_ = res_img2.save(filestream, 'JPEG', quality=90)
+            filestream.seek(0)
+            name = '{}.{}'.format(*self.file.name.split('.'))
+            self.file = InMemoryUploadedFile(
+                filestream, 'ImageField', name, 'jpeg/image', sys.getsizeof(filestream),  None
+            )
+            super().save(*args, **kwargs)
 
 
 class Topic(models.Model):
+
+    class Meta:
+        ordering = ['-pk']
+
     subject = models.CharField(max_length=255, verbose_name='Тема')
     last_updated = models.DateTimeField(auto_now_add=True)
     board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name="topics")

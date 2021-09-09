@@ -4,10 +4,11 @@ import { Modal, Button } from 'react-bootstrap'
 import { withFormik, Form, Field, Formik } from 'formik';
 import * as Yup from "yup";
 
-function MyModal({open,handleClose,boarD,props}) {
-    const tokens = localStorage.tokens;
 
-  const  validationSchema = Yup.object().shape({
+function MyModal({open,handleClose,boarD,props}) {
+
+    const tokens = localStorage.tokens;
+    const  validationSchema = Yup.object().shape({
     name: Yup.string().required('name is wrong'),
     description: Yup.string().required('Description is wrong')
   })
@@ -79,7 +80,6 @@ function MyModal({open,handleClose,boarD,props}) {
     </React.Fragment>
 
         </Modal.Body>
-
 
 
       </Modal>

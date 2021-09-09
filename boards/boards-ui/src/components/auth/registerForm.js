@@ -72,7 +72,7 @@ const RegisterPage = (props) => {
               <Field type="password" name="password" id={"password"} className={"form-control "} placeholder="Password" />
               { props.touched.password && props.errors.password && <span className="help-block text-danger">{props.errors.password}</span> }
             </div>
-            <button type="submit" className="btn btn-primary mb-2">Register</button>
+            <button type="submit" className="btn btn-primary m-2">Register</button>
           </Form>)}
              </Formik>
         </div>

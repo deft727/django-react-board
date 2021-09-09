@@ -13,7 +13,10 @@ import InfoPageDetail from "./components/InfoPages/infopages";
 import LoginFormik from "./components/auth/signUpform";
 import RegisterPage from "./components/auth/registerForm";
 import Profile from "./components/account/my_account";
+import Profile2 from "./components/account/my_account2";
 
+import NewTopic from "./components/NewTopic/newtopic"
+import PicUploadNoCrop from "./components/account/my_account2";
 
 function App() {
   return (
@@ -26,7 +29,7 @@ function App() {
       <Route path="/auth/users/" component={RegisterPage} />
 
       <Route path="/pages/:id/" component={InfoPageDetail} />
-      <Route path="/account/" component={Profile} />
+      <Route path="/account/" component={Profile2} />
 
       <Route path="/customer-list/" exact component={CustomersList} />
       <Route path="/customer/:pk/"  component={CustomerCreateUpdate} />
@@ -35,7 +38,7 @@ function App() {
         <Route path="/board/:id/topic/:pk/" exect component={TopicDetail} />
 
         <Route path="/board/:id/" exect component={BoardDetail} />
-
+        <Route path="/board/:id/new/"  component={NewTopic} />
         <Route path="" exect component={Table} />
 
       </Switch>

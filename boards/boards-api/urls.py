@@ -1,6 +1,6 @@
 from .main.router import main_router, extra_urlpatterns
 from django.urls import path
-from .main.views import TopicView
+# from .main.views import TopicView
 
 urlpatterns = [
 ]

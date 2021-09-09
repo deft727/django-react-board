@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import Carousel from 'react-bootstrap/Carousel'
+import {Button} from "react-bootstrap";
+import NewTopic from "../NewTopic/newtopic";
+import NewPost from "../NewPost/newpost";
 
 function TopicDetail({ match }) {
-
+    const tokens = localStorage.tokens;
     const [topic, SetTopic] = useState({})
     const [posts, SetPosts] = useState([])
+    const [images, SetImage] = useState([])
     const id = match.params.id
     const pk = match.params.pk
-    console.log("match", match)
+    const [showPost, setShowPost] = useState(false);
+    const handleClosePost = () => setShowPost(false);
+    const handleShowPost =() =>{
+      setShowPost(true);}
+
+
     useEffect(() => {
         axios({
             method: "GET",
@@ -16,61 +26,64 @@ function TopicDetail({ match }) {
         }).then(response => {
             SetTopic(response.data)
             SetPosts(response.data.posts)
+            SetImage(response.data.photos)
         })
-    }, [id])
+    }, [id,showPost])
     return(
 
-<div className="App bordered mt-4 m-3">
 
-           <table className="table table-bordered m-2">
-               <thead>
-               <tr>
+<div className="App bordered mt-3 ">
+
+    <div className="d-flex justify-content-center">
+        <div className="row">
+            <div className="col-sm">
+ <Carousel>
+   {images.map(i => (
+  <Carousel.Item>
+    <img
+
+      className="d-block"
+      src={i.file}
+      alt="First slide"
+    />
+  </Carousel.Item>
+
+       ))}
+</Carousel>
+</div>
+  </div>
+
+</div>
+    <div className="container-fluid">
+
+    <table className="table table-bordered m-2">
+
+               <thead>  {showPost && <NewPost openPost={showPost}   handleClosePost={handleClosePost} />}
+                             {
+     !posts.length  ? <strong>No contents create new <Button variant="btn btn-link" onClick={()=>handleShowPost()}>post</Button>
+     </strong> : ( <>
+    <Button placement="right" variant="btn btn-primary mt-2"  onClick={()=>handleShowPost()} >New Post</Button>
+
+               <tr >
                    <th scope="col">User</th>
-                   <th scope="col">Post</th>
+                   <th scope="col" >Post</th>
                    <th scope="col">Time</th>
-               </tr>
+               </tr>  </>)
+                        }
                </thead>
                {posts.map(p => (
                <tbody key="{p.id}">
                <tr>
                    <th >{p.created_by}</th>
-                   <td>{p.message}</td>
+                   <td >{p.message}</td>
                    <td>{p.created_at}</td>
                </tr>
                </tbody>
                    ))}
+
            </table>
+</div>
 </div>
     )
 }
 export default TopicDetail;
-
-
-
-        // <div className="card border-success mb-3" key="{p.id}">
-        //     <div className="card-header bg-transparent border-success">{topic.subject}</div>
-        //     <div className="card-body text-success">
-        //         <h5 className="card-title">{p.created_by}</h5>
-        //         <p className="card-text">{p.message}.</p>
-        //     </div>
-        //     </div>
-
- // <div key="{p.id}" className="card m-4">
- //               <div className="card-header text-white bg-dark py-2 px-3 ">{topic.subject}</div>
- //               <div className="card-body p-3 mt-3">
- //                   <div className="row">
- //                       <div className="col-2">
- //                           <strong className="text-muted">{p.created_by}</strong>
- //                            <small>Posts: {p.postCount}</small>
- //                       </div>
- //                       <div className="col-10">
- //                           <div className="row mb-3">
- //                               <div className="col-6 text-right">
- //                                   <small className="text-muted">{p.created_at}</small>
- //                               </div>
- //                           </div>
- //                           {p.message}
- //                       </div>
- //                   </div>
- //               </div>
- //           </div>

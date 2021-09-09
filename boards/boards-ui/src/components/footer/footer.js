@@ -8,10 +8,8 @@ function Footer() {
 
   return (
 
-
-        <div className="footer fixed-bottom">
+        <div className="footer" style={{marginTop:'265px'}}>
             <footer className="text-center text-lg-start bg-light text-muted mt-auto" >
-
                 <section className="" >
                     <div className="container text-center text-md-start mt-5">
 
@@ -63,6 +61,8 @@ function Footer() {
                 </div>
             </footer>
         </div>
+
+
   )
 }
 
