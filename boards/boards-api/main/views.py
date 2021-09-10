@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.parsers import FileUploadParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from board.models import Board , Topic, Post , Blogger , Reader, InfoPages, Photo
+from board.models import Board , Topic, Post , Blogger , Reader, InfoPages, Photo , Avatar
 from rest_framework.authentication import BasicAuthentication
 
 
@@ -39,7 +39,22 @@ class UserViewSet(APIView):
         return Response(serializer.data)
 
     def post(self, request,):
-        print(request.data)
+
+        data = request.data
+        user = get_user(request)
+        files = request.FILES.get('image')
+
+        if user:
+
+            try:
+                avatar = Avatar.objects.get(user=user)
+                avatar.delete()
+                Avatar.objects.create(image=files, user=user)
+            except:
+                Avatar.objects.create(image=files, user=user)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class BoardViewSet(viewsets.ModelViewSet):

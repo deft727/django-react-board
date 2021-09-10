@@ -1,6 +1,13 @@
 from rest_framework import serializers
-from board.models import Board, Post, Topic, Reader, Blogger , InfoPages , Photo
+from board.models import Board, Post, Topic, Reader, Blogger , InfoPages , Photo , Avatar
 from django.contrib.auth.models import User
+
+
+class Avatarserializers(serializers.ModelSerializer):
+
+    class Meta:
+        model = Avatar
+        fields = "__all__"
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -19,10 +26,12 @@ class CreateTopicSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 
+    image = Avatarserializers()
+
     class Meta:
 
         model = User
-        fields = ("id", "username", "email")
+        fields = ("id", "username", "email", "image")
 
 
 class PostSerializer(serializers.ModelSerializer):

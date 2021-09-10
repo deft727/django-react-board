@@ -7,12 +7,15 @@ import CropModal from './modalcrop'
 import axios from 'axios';
 import {Button} from "react-bootstrap";
 import NewTopic from "../NewTopic/newtopic";
+import Dialog from "./Dialog";
+
 
 function Profile2() {
     const [user, Setuser] = useState({})
     const tokens = localStorage.tokens;
     const [showTopic, setShowTopic] = useState(false);
     const handleCloseTopic = () => setShowTopic(false);
+    const[image, setImage] = useState({})
 
     const handleShowTopic =() =>{
       setShowTopic(true);}
@@ -27,8 +30,9 @@ function Profile2() {
                 },
             url: `http://127.0.0.1:8000/api/account/`
         }).then(response => {
-            console.log(response.data)
+            // console.log(response.data)
             Setuser(response.data)
+            setImage(response.data.image)
         })
     }, [])
 
@@ -45,13 +49,15 @@ function Profile2() {
                                   <div className="card-block text-center text-white">
                                       <div className="m-b-5">
                                           <img
-                                          src="https://img.icons8.com/bubbles/100/000000/user.png"
+                                          src={image.image}
                                           className="img-radius" alt="User-Profile-Image" />
- {
-                          !tokens ? null : ( <>
-              <Button variant="btn btn-link" className="d-flex m-1 ml-2" onClick={()=>handleShowTopic()} >New Topic</Button>
-  {showTopic && <CropModal openTopic={showTopic}  handleCloseTopic={handleCloseTopic} />}
-  </>)
+                                                <Dialog />
+
+ {/*{*/}
+ {/*                         !tokens ? null : ( <>*/}
+ {/*             <Button variant="btn btn-link" className="d-flex m-1 ml-2" onClick={()=>handleShowTopic()} >New Topic</Button>*/}
+ {/* {showTopic && <CropModal openTopic={showTopic}  handleCloseTopic={handleCloseTopic} />}*/}
+ {/* </>)*/}
                         }
                                       </div>
 
@@ -84,7 +90,24 @@ function Profile2() {
           </div>
       </div>
     </div>
+
   )
 }
 
 export default Profile2;
+
+
+
+
+
+
+
+
+// axios.post(`http://127.0.0.1:8000/api/account/`, formData, {
+//   headers: {
+//     'accept': 'application/json',
+//     'Accept-Language': 'en-US,en;q=0.8',
+//     'Content-Type': `multipart/form-data`,
+//     'Authorization': `Token ${tokens}`,
+//
+//   }})

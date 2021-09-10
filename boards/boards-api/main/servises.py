@@ -18,7 +18,7 @@ class PaginationBoards(PageNumberPagination):
             },
             'count': self.page.paginator.count,
             'results': data,
-            'history':  Board.history.all().values("name", "history_type", "history_date")
+            'history':  Board.history.all().values("name", "history_type", "history_date")[:10]
         })
 
 

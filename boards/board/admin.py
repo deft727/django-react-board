@@ -36,5 +36,4 @@ admin.site.register(Photo)
 admin.site.register(Reader, ReaderAdmin)
 admin.site.register(Blogger, BloggerAdmin)
 admin.site.register(InfoPages)
-
-
+admin.site.register(Avatar)

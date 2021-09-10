@@ -11,8 +11,8 @@ from simple_history.models import HistoricalRecords
 
 
 class Avatar(models.Model):
-    image =  models.ImageField(null=True, blank=True, upload_to='avatar/')
-    user = models.CharField(blank=True, null=True, default=None, max_length=255, verbose_name='имя')
+    image = models.ImageField(null=True, blank=True, upload_to='avatar/')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="image")
 
 
 class Blogger(models.Model):
